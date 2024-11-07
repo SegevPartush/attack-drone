@@ -1,5 +1,5 @@
 const express = require('express');
-const { shopView, shopItems, adminShop, adminShopCreateView, adminShopCreate, adminShopUpdateView, adminShopUpdate, shopItemDetail } = require('../controllers/shopController')
+const { shopView, shopItems, adminShop, adminShopCreateView, adminShopCreate, adminShopUpdateView, adminShopUpdate, shopItemDetail, deleteProduct } = require('../controllers/shopController')
 const router = express.Router();
 const verifyUser = require('../utils/verifyToken');
 
@@ -11,5 +11,6 @@ router.get('/adminShop/create', verifyUser(['admin']), adminShopCreateView);
 router.post('/adminShop/create', verifyUser(['admin']), adminShopCreate);
 router.get('/adminShop/:productId', verifyUser(['admin']), adminShopUpdateView);
 router.post('/adminShop/:productId', verifyUser(['admin']), adminShopUpdate);
+router.delete('/adminShop/delete/:productId', verifyUser(['admin']), deleteProduct);
 
 module.exports = router;
