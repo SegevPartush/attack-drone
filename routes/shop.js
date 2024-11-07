@@ -3,7 +3,7 @@ const { shopView, shopItems, adminShop, adminShopCreateView, adminShopCreate, ad
 const router = express.Router();
 const verifyUser = require('../utils/verifyToken');
 
-router.get('/shop', verifyUser(['admin', 'user']), shopView);
+router.get('/shop', verifyUser(['admin', 'user']), shopItems);
 router.get('/shop/items', verifyUser(['admin', 'user']), shopItems);
 router.get('/shop/items/:itemId', verifyUser(['admin', 'user']), shopItemDetail);
 router.get('/adminShop', verifyUser(['admin']), adminShop);
