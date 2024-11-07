@@ -17,6 +17,7 @@ const storage = new GridFsStorage({
             filename: `${Date.now()}-product-${file.originalname}`,
         };
     },
+    //sdfsdf
 });
 
 module.exports = multer({ storage });

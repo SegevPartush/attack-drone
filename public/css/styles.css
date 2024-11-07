@@ -80,7 +80,10 @@
     scroll-behavior: smooth;
   }
 }
-
+form {
+  overflow: auto; /* מוסיף גלילה במקרה הצורך */
+  max-height: 500px; /* אם הפורם ארוך מדי, הגבלת גובה */
+}
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
@@ -293,10 +296,33 @@ kbd kbd {
 figure {
   margin: 0 0 1rem;
 }
+.navbar{
+  position: relative;
+}
 
-img,
-svg {
-  vertical-align: middle;
+/* התאמה של גודל הלוגו */
+.navbar-brand img {
+  width: 100px;
+  height: 40px;
+}
+
+/* התאמה של התמונות בסרגל הניווט (לוגו, עגלת קניות וכו') */
+.navbar-nav img {
+  width: 40px;
+  height: 40px;
+}
+
+/* התאמת גודל בתנאי רספונסיביות */
+@media (max-width: 768px) {
+  .navbar-brand img {
+      width: 80px;  /* גודל הלוגו במובייל */
+      height: auto;
+  }
+
+  .navbar-nav img {
+      width: 35px;  /* גודל תמונות אחרות במובייל */
+      height: 35px;
+  }
 }
 
 table {
@@ -435,14 +461,6 @@ legend + * {
   -webkit-appearance: textfield;
 }
 
-/* rtl:raw:
-[type="tel"],
-[type="url"],
-[type="email"],
-[type="number"] {
-  direction: ltr;
-}
-*/
 ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
@@ -613,50 +631,137 @@ progress {
 
 .figure-caption {
   font-size: 0.875em;
-  color: #6c757d;
+  color: #a9aeb3;
 }
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
+/*  EXPLOREעיצוב כללי */
+/* עיצוב כללי */
+body {
+  font-family: 'Roboto Slab', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  overflow-x: hidden; /* מונע גלילה אופקית */
+  height: 100%; /* וודא שהגוף תופס את כל הגובה של המסך */
+  overflow-y: auto; /* אפשר גלילה אנכית */
+}
+
+/* עיצוב הקונטיינר */
+.container {
   width: 100%;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  padding-right: 20px; /* padding קטן יותר */
+  padding-left: 20px;  /* padding קטן יותר */
   margin-right: auto;
   margin-left: auto;
+  box-sizing: border-box; /* כך שה-padding לא יוצא מעבר לרוחב הקונטיינר */
+  max-width: 1320px; /* הגבלת רוחב הקונטיינר */
 }
 
+/* הגדרת שורות במבנה של Flexbox */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;  /* מרווח בין המלבנים */
+  justify-content: space-between; /* מרווח אחיד בין המלבנים */
+  width: 100%;  /* לוודא שהשורה לא תצא מעבר לגבולות */
+  align-items: stretch; /* מתיחה של כל המלבנים לאורך הגובה */
+}
+
+/* עיצוב המלבנים */
+.col {
+  flex: 1; /* כל מלבן יתפוס את כל הרוחב של השורה */
+  box-sizing: border-box; /* כך שה-padding נלקח בחשבון */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  height: 100%; /* וודא שהמלבנים יתפשטו לגובה */
+  display: flex;
+  flex-direction: column; /* מבנה גמיש של המלבן */
+  justify-content: space-between; /* דאג שכל האלמנטים יתפשטו כלפי מטה */
+}
+
+/* עיצוב עבור כל אחד מהמלבנים */
+.video-container, .weather-container, .map-container {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-grow: 1; /* מוודא שהמלבן יתפשט גם לגובה וגם לרוחב */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* מאפשר למלבן להתפשט לגובה */
+}
+
+/* כותרת עבור כל מלבן */
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* כותרת בשחור */
+  margin-bottom: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 10px;
+  flex-shrink: 0; /* מונע שהתוכן יתכווץ */
+}
+
+/* תיקונים ל-Responsiveness */
+@media (max-width: 768px) {
+  .col {
+    flex: 1 1 100%;  /* כל מלבן יתפוס את כל הרוחב בשורות צרות יותר */
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 20px; /* צמצום גודל הכותרת במובייל */
+  }
+
+  .weather-container p {
+    font-size: 16px; /* התאמת גודל הטקסט במובייל */
+  }
+}
+
+/* שיפור בהתאמה לגודלי מסכים שונים */
 @media (min-width: 576px) {
-  .container-sm, .container {
-    max-width: 540px;
+  .container {
+    max-width: 540px; /* הגבלת רוחב הקונטיינר למסכים בינוניים */
   }
 }
+
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container {
-    max-width: 720px;
+  .container {
+    max-width: 720px; /* הגבלת רוחב הקונטיינר למסכים גדולים יותר */
   }
 }
+
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 960px;
   }
 }
+
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 1140px;
   }
 }
+
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 1320px;
   }
 }
+
+/* עיצוב עבור iframe (לסרטונים ומפות) */
+.video-container iframe, .map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* שדרוג הגדרת השורות */
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -666,6 +771,7 @@ progress {
   margin-right: calc(-0.5 * var(--bs-gutter-x));
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
+
 .row > * {
   flex-shrink: 0;
   width: 100%;
@@ -675,9 +781,15 @@ progress {
   margin-top: var(--bs-gutter-y);
 }
 
-.col {
-  flex: 1 0 0%;
+/* שינוי צבע הכיתוב במלבן השני (או כל מלבן שתרצה) */
+.weather-container .section-title {
+  color: black !important; /* כותרת בצבע שחור */
 }
+
+.weather-container p {
+  color: black; /* טקסט במלבן השני יהיה בצבע שחור */
+}
+/*end explore*/
 
 .row-cols-auto > * {
   flex: 0 0 auto;
@@ -2132,6 +2244,13 @@ textarea.form-control-lg {
   height: calc(1.5em + 1rem + 2px);
 }
 
+body {
+  background-image: url(back.jpeg);
+  background-size: cover; /* זה יגרום לתמונה לכסות את כל הדף */
+  background-position: center center; /* זה ימקם את התמונה במרכז */
+  background-repeat: no-repeat; /* תמונה לא תחזור על עצמה */
+}
+
 .form-select {
   display: block;
   width: 100%;
@@ -2767,7 +2886,7 @@ textarea.form-control-lg {
   --bs-btn-bg: transparent;
   --bs-btn-border-width: 0.1px;
   --bs-btn-border-color: transparent;
-  --bs-btn-border-radius: 10rem;
+  --bs-btn-border-radius: 0.7rem;
   --bs-btn-hover-border-color: transparent;
   --bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
   --bs-btn-disabled-opacity: 0.1;
@@ -2787,7 +2906,7 @@ textarea.form-control-lg {
      -moz-user-select: none;
           user-select: none;
   border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
-  border-radius: var(--bs-btn-border-radius);
+  border-radius: 5px var(--bs-btn-border-radius) 5px 5px;
   background-color: var(--bs-btn-bg);
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -2819,6 +2938,7 @@ textarea.form-control-lg {
   outline: 0;
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
+
 .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
   color: var(--bs-btn-active-color);
   background-color: var(--bs-btn-active-bg);
@@ -2837,8 +2957,8 @@ textarea.form-control-lg {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #00000;
-  --bs-btn-border-color: #fff;
+  --bs-btn-bg: rgba(128, 128, 128, 0.5);
+  --bs-btn-border-color: rgba(128, 128, 128, 0.5);
   --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #d9aa00;
   --bs-btn-hover-border-color: #cca000;
@@ -2969,6 +3089,23 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: #212529;
   --bs-btn-disabled-border-color: #212529;
+}
+
+.btn-gray {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #83878b;
+  --bs-btn-border-color: #ebf0f5;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #83878b;
+  --bs-btn-hover-border-color: #83878b;
+  --bs-btn-focus-shadow-rgb: 66, 70, 73;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #4d5154;
+  --bs-btn-active-border-color: #83878b;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #83878b;
+  --bs-btn-disabled-border-color: #83878b;
 }
 
 .btn-outline-primary {
@@ -3729,7 +3866,7 @@ textarea.form-control-lg {
   --bs-navbar-brand-font-size: 1.25rem;
   --bs-navbar-brand-color: rgba(0, 0, 0, 0.9);
   --bs-navbar-brand-hover-color: rgba(0, 0, 0, 0.9);
-  --bs-navbar-nav-link-padding-x: 0.5rem;
+  --bs-navbar-nav-link-padding-x: 0.6rem;
   --bs-navbar-toggler-padding-y: 0.25rem;
   --bs-navbar-toggler-padding-x: 0.75rem;
   --bs-navbar-toggler-font-size: 1.25rem;
@@ -4202,6 +4339,7 @@ textarea.form-control-lg {
 
 .card-title {
   margin-bottom: var(--bs-card-title-spacer-y);
+  color: black;
 }
 
 .card-subtitle {
@@ -10823,7 +10961,11 @@ html {
 }
 
 body {
-  position: relative;
+  position: initial;
+}
+
+.applyBtn {
+  background-color: #d9aa00;
 }
 
 p {
@@ -10875,7 +11017,7 @@ p {
 #mainNav {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: #212529;
+  background-color: #99a3ad;
 }
 #mainNav .navbar-toggler {
   padding: 0.75rem;
@@ -10909,7 +11051,9 @@ p {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     border: none;
-    background-color: transparent;
+    position: fixed;
+    height: 80px;
+    background-color: #989ca173;
     transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
   }
   #mainNav .navbar-brand {
@@ -10923,7 +11067,7 @@ p {
   #mainNav.navbar-shrink {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: #212529;
+    background-color: #99a3ad;
   }
   #mainNav.navbar-shrink .navbar-brand {
     font-size: 1.25em;
@@ -10938,17 +11082,31 @@ p {
   #mainNav .navbar-nav .nav-item:last-child {
     margin-right: 0;
   }
-}
-header.masthead {
-  padding-top: 10.5rem;
-  padding-bottom: 6rem;
-  text-align: center;
-  color: #fff;
-  background-image: url("header-bg.jpg");
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
-  background-size: cover;
+  header.masthead {
+    position: relative;
+    padding-top: 10.5rem;
+    padding-bottom: 6rem;
+    text-align: center;
+    color: #fff;
+    margin-top: 80px;
+    height: calc(100vh - 80px);
+    overflow: hidden;  /* לוודא שהסרטון לא יצא מחוץ לאזור */
+  }
+  
+  #background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* הסרטון יתפוס את כל הרקע מבלי לעיוות */
+    z-index: -1;  /* הסרטון יהיה מאחורי התוכן */
+  }
+
+@media (max-width: 1368px) {
+  header.masthead {
+    height: 100%;
+  }
 }
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
@@ -10961,14 +11119,24 @@ header.masthead .masthead-heading {
   font-size: 3.25rem;
   font-weight: 700;
   line-height: 3.25rem;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.drone-item {
+  background-color: #989ca173;
+  border-radius: 8px;
+  padding: 15px 25px;
+}
+
+.drone-tail {
+  padding-bottom: 4rem;
 }
 
 @media (min-width: 768px) {
   header.masthead {
-    padding-top: 17rem;
-    padding-bottom: 12.5rem;
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
   }
   header.masthead .masthead-subheading {
     font-size: 2.25rem;
@@ -11307,7 +11475,159 @@ section#contact form#contactForm :-ms-input-placeholder {
 }
 
 .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   text-align: center;
   font-size: 0.9rem;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.sign-form {
+  background-color: #989ca173;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: start;
+  max-width: 350px;
+}
+
+.sign-panel {
+  display: flex;
+  justify-content: end;
+}
+
+.drone-item-shop {
+  background-color: #989ca173;
+  border-radius: 8px;
+  padding: 15px 25px;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drone-item-shop-item {
+  background-color: #989ca173;
+  border-radius: 8px;
+  padding: 15px 25px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drone-tail-component {
+  padding-bottom: 10rem;
+}
+
+.weather {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.cart_quantity_button a {
+  background: #F0F0E9;
+  color: #696763;
+  display: inline-block;
+  font-size: 16px;
+  height: 28px;
+  overflow: hidden;
+  text-align: center;
+  width: 35px;
+  float: left;
+  text-decoration: none;
+}
+
+.cart_quantity_input {
+  color: #696763;
+  float: left;
+  font-size: 16px;
+  text-align: center;
+  font-family: 'Roboto',sans-serif;
+}
+
+#description {
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  font-family: Roboto;
+  padding: 0;
+}
+
+#pac-container {
+  padding-bottom: 12px;
+  margin-right: 12px;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.controls {
+  margin-top: 16px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pac-controls label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 200px;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+#title {
+  color: #fff;
+  background-color: #4d90fe;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+
+#target {
+  width: 345px;
 }
