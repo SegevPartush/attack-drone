@@ -6,51 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Drone</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <title>Admin Shop | Drone</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="../css/styles.css" rel="stylesheet" />
 </head>
 
 <body id="page-top">
     
-    <%- include('partials/homeHeader') %>
+    <%- include('partials/adminHeader') %>
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">
-            <div class="drone-tail">
-                <div class="masthead-heading text" style="color: #958f9d">Hello Shay!</div>
-                <ul><a class="btn btn-primary btn-xl text-uppercase" href="/signup"
-                        style="width:200px;height:55px;">sign up ></a></ul>
-                <ul><a class="btn btn-primary btn-xl text-uppercase" href="/signin"
-                        style="width:200px;height:55px;">sign in ></a></ul>
-
+            <div class="row">
+                <div class="d-flex mb-3">
+                    <a href="/adminShop/create" class="btn btn-primary" style="background-color: #d9aa00;">Create Product</a>
+                </div>
             </div>
             <div class="row">
-                <% items.forEach(function(item) { %>
+                <% products.forEach(function(product) { %>
                 <div class="col-lg-4 col-sm-6 mb-4">
-                    <div class="drone-item" >
-                        <div class="mb-3" style="font-size:large;color:black;font-family:'Arial Black'; " >
-                            <span><%= item.name %></span>
+                    <div class="drone-item">
+                        <div class="mb-3">
+                            <span><%= product.name %></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <img class="img-fluid" style="border-radius: 10px;" src="<%= item.productImg %>"
+                                <img style="border-radius: 10px; height: 150px; width: 150px;" src="<%= product.productImg %>"
                                     alt="..." />
                             </div>
                             <div class="col-md-6">
-                                <p class="text-start" style="font-size:large;color:black;font-family:'Arial Black'">Name: <%= item.name %></p>
-                                <p class="text-start" style="font-size:large;color:black;font-family:'Arial Black'">Price: <%= item.price %></p>
+                                <p class="text-start">Name: <%= product.name %></p>
+                                <p class="text-start">Price: <%= product.price %></p>
+                                <p class="text-start">Stock: <%= product.stock %></p>
                                 <div class="mt-3 text-end">
-                                    <a href="/shop/items" class="btn btn-gray" style="color:black;font-family:'Arial Black'">Buy now ></a>
+                                    <a href="/adminShop/<%= product._id %>" class="btn btn-gray">Edit ></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <% }) %>
+                <div class="testet">
+                    <% if (currentPage > 1) { %>
+                      <a class="btn btn-primary btn-sm" href="?page=<%= currentPage - 1 %>">Previous</a>
+                    <% } %>
+                        
+                    <% if (currentPage < totalPages) { %>
+                      <a class="btn btn-primary btn-sm" href="?page=<%= currentPage + 1 %>">Next</a>
+                    <% } %>
+                </div>
             </div>
         </div>
 
