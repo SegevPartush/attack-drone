@@ -34,7 +34,7 @@ const shopItemDetail = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.message);
     }
-    
+
 }
 
 const adminShop = async (req, res) => {
@@ -54,7 +54,6 @@ const adminShop = async (req, res) => {
     } catch (error) {
         return res.status(500).send(error.message);
     }
-    
 }
 
 const adminShopCreateView = (req, res) => {
@@ -116,6 +115,27 @@ const adminShopUpdate = async (req, res) => {
     }
 }
 
+// Delete product route for admin
+const deleteProduct = async (req, res) => {
+    const productId = req.params.productId;  // Access product ID from the URL parameter
+
+    try {
+        // Find and delete the product from the database
+        const deletedProduct = await Product.findByIdAndDelete(productId);
+
+        if (!deletedProduct) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        // Send a success response
+        res.status(200).json({ success: true, message: "Product deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Failed to delete product", error: error.message });
+    }
+};
+
+
+
 module.exports = {
     shopView,
     shopItems,
@@ -125,4 +145,5 @@ module.exports = {
     adminShopUpdateView,
     adminShopUpdate,
     shopItemDetail,
+    deleteProduct,
 }

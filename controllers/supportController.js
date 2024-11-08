@@ -1,32 +1,41 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY); // Use environment variable for security
 
 const supportView = async (req, res) => {
-    
     res.render('support', {
-    
         status: ''
     });
 }
 
 const contactSend = async (req, res) => {
     const msg = {
-        from: req.body.email,
-        to: 'dronteamsend@gmail.com',
+        to: 'bar23237@gmail.com',
+        from: 'bar23237@gmail.com',
         subject: 'Support',
-        text: 'Plain text body of your email',
-        html: `<p>${req.body.content}</p>`,
+        text: `User email: ${req.body.email}\nMessage: ${req.body.content}`,
     };
-    sgMail.send(msg)
-        .then(() => {
-            console.log('Email sent');
-        })
-        .catch((error) => {
-            console.error(error);
+
+    try {
+        await sgMail.send(msg); // Await the send function
+        console.log('Email sent');
+        // res.render('support', {
+        // status: 'Email sent successfully!' // Success message
+
+        // });
+        res.json({
+            status: 'success',
+            message: 'Email sent successfully!'  // Success message to be displayed on the page
         });
-    res.render('support', {
-        status: ''
-    });
+    } catch (error) {
+        console.error(error);
+        // res.render('support', {
+        //     status: 'Failed to send email. Please try again later.' // Error message
+        // });
+        res.json({
+            status: 'error',
+            message: 'Failed to send email. Please try again later.'  // Error message to be displayed on the page
+        });
+    }
 }
 
 module.exports = {

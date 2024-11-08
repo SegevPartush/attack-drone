@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Sign In</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+
+    <%- include('partials/homeHeader') %>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="sign-panel">
+                    <form class="sign-form needs-validation" id="signinForm" method="POST" action="/signin" novalidate>
+                        <% if (status=="success" ) { %>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>
+                                    <%= message %>
+                                </strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                            <% } else if (status=="error" ) { %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>
+                                        <%= message %>
+                                    </strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                                <% } %>
+                                    <div id="errorMsg"></div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label form-floating">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required />
+                                        <div class="invalid-feedback">
+                                            Please input a email.
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            required />
+                                        <div class="invalid-feedback">
+                                            Please input a password.
+                                        </div>
+                                    </div>
+                                    <button type="button" id="signin_btn" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+        </header>
+        <% if (status==='signout' ) { %>
+            <input type="hidden" id="signout" value="<%= status %>">
+            <% } %>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                <!-- Bootstrap core JS-->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+                <!-- Core theme JS-->
+                <script src="js/scripts.js"></script>
+                <script src="js/form-validation.js"></script>
+                <script>
+                    const signoutField = document.getElementById('signout')
+                    if (signoutField) {
+                        // document.cookie = "token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+                        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";  // if you also want to clear 'accessToken'
+
+                        window.location.href = '/signin';
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('userData');
+                    }
+                    $("#signin_btn").on("click", function (e) {
+                        var form = $("#signinForm");
+                        if (form[0].checkValidity() === false) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            form[0].classList.add("was-validated");
+                            return;
+                        }
+                        let data = {
+                            email: $("#email").val(),
+                            password: $("#password").val(),
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '/signin',
+                            data: data,
+                            success: function (result) {
+                                if (result.status == "success") {
+                                    localStorage.setItem('accessToken', result.response.accessToken);
+                                    localStorage.setItem('userData', JSON.stringify(result.response.userData));
+                                    document.cookie = `accessToken=${result.response.accessToken}`;
+                                    if (result.response.userData.role == "admin") {
+                                        location.href = "/adminDashboard";
+                                    } else if (result.response.userData.role == "user") {
+                                        location.href = "/userDashboard";
+                                    }
+                                } else {
+                                    $("#errorMsg").html(
+                                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                        '<strong>' + result.message + '</strong>' +
+                                        '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                        '</div>'
+                                    );
+                                }
+
+                            }
+                        });
+
+                    });
+                </script>
+</body>
+
+</html>

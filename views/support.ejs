@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Support | Drone</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body id="page-top">
+
+    <%- include('partials/userHeader') %>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-8 mb-4">
+                        <div class="card mb-4" style="background-color: #989ca173;">
+                            <div class="card-header py-3">
+                                <h5 class="mb-0 text-start text-white">Contact</h5>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form class="text-start contact-form needs-validation" method="POST"
+                                            action="/support" id="contactForm" novalidate>
+                                            <div id="eMsg"></div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label form-floating">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email"
+                                                    required />
+                                                <div class="invalid-feedback">
+                                                    Please input a email.
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="content" class="form-label">Content</label>
+                                                <textarea type="text" rows="6" class="form-control" id="content"
+                                                    name="content" required></textarea>
+                                                <div class="invalid-feedback">
+                                                    Please input the Content.
+                                                </div>
+                                            </div>
+                                            <button type="button" id="contact_btn"
+                                                class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+        </header>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <script>
+            $("#contact_btn").on("click", function (e) {
+                var form = $("#contactForm");
+
+                // If form is invalid, stop further execution
+                if (form[0].checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form[0].classList.add("was-validated");
+                    return;
+                }
+
+                // Gather the data from the form
+                let data = {
+                    email: $("#email").val(),
+                    content: $("#content").val(),
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/support',  // Make sure this URL matches the route in your Express app
+                    data: data,  // Send the form data
+                    success: function (result) {
+                        // Check the status from the backend response
+                        if (result.status == "success") {
+                            // Display success message in the #eMsg div
+                            $("#eMsg").html(
+                                '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        } else {
+                            // Display error message in the #eMsg div
+                            $("#eMsg").html(
+                                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        }
+                    },
+                    error: function (error) {
+                        // In case of a request error, display a generic error message
+                        $("#eMsg").html(
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<strong>Something went wrong. Please try again later.</strong>' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            '</div>'
+                        );
+                    }
+                });
+            });
+        </script>
+
+
+        <script>
+            $("#contact_btn").on("click", function (e) {
+                var form = $("#contactForm");
+
+                // If form is invalid, stop further execution
+                if (form[0].checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form[0].classList.add("was-validated");
+                    return;
+                }
+
+                // Gather the data from the form
+                let data = {
+                    email: $("#email").val(),
+                    content: $("#content").val(),
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/support',  // Make sure this URL matches the route in your Express app
+                    data: data,  // Send the form data
+                    success: function (result) {
+                        // Check the status from the backend response
+                        if (result.status == "success") {
+                            // Display success message in the #eMsg div
+                            $("#eMsg").html(
+                                '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        } else {
+                            // Display error message in the #eMsg div
+                            $("#eMsg").html(
+                                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        }
+                    },
+                    error: function (error) {
+                        // In case of a request error, display a generic error message
+                        $("#eMsg").html(
+                            '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<strong>Something went wrong. Please try again later.</strong>' +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                            '</div>'
+                        );
+                    }
+                });
+            });
+        </script>
+
+
+
+        <!--  Old Script -->
+        <script>
+            $("#contact_btn").on("click", function (e) {
+                var form = $("#contactForm");
+                if (form[0].checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form[0].classList.add("was-validated");
+                    return;
+                }
+                let data = {
+                    email: $("#email").val(),
+                    content: $("#content").val(),
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/support',
+                    data: data,
+                    success: function (result) {
+                        if (result.status == "success") {
+                            $("#msg").html(
+                                '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        } else {
+                            $("#msg").html(
+                                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                '<strong>' + result.message + '</strong>' +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                '</div>'
+                            );
+                        }
+
+                    }
+                });
+            });
+        </script>
+</body>
+
+</html>

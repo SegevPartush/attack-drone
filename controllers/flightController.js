@@ -1,8 +1,6 @@
 const { Flight } = require("../models/Flight");
 const { Order } = require("../models/Order");
-const axios = require("axios");
-const OAuth = require("oauth-1.0a");
-const crypto = require("crypto");
+const { TwitterApi } = require('twitter-api-v2');
 
 const flightView = async (req, res) => {
   const purchases = await Order.find({ user: req.user._id })
@@ -39,46 +37,27 @@ const flightAdd = async (req, res) => {
   const tweetMessage = `New Flight Details: Date - ${flightData.date}, Item used - ${flightData.item}, Duration - ${flightData.duration}, Location - ${flightData.location}, Pilot Comment - ${flightData.comment}.`;
 
   try {
+    // Create flight record in the database
     const flight = await Flight.create(flightData);
 
-
-    const request = {
-      url: "https://api.twitter.com/2/tweets",
-      method: "POST",
-    };
-
-    const oauth = new OAuth({
-      consumer: {
-        key: process.env.TWITTER_API_KEY,
-        secret: process.env.TWITTER_API_KEY_SECRET,
-      },
-      signature_method: "HMAC-SHA1",
-      hash_function(base_string, key) {
-        return crypto
-          .createHmac("sha1", key)
-          .update(base_string)
-          .digest("base64");
-      },
+    // Initialize Twitter API client
+    const client = new TwitterApi({
+      appKey: process.env.TWITTER_API_KEY,
+      appSecret: process.env.TWITTER_API_KEY_SECRET,
+      accessToken: process.env.TWITTER_API_ACCESS_TOKEN,
+      accessSecret: process.env.TWITTER_API_ACCESS_TOKEN_SECRET,
     });
 
-    const authorization = oauth.authorize(request, {
-      key: process.env.TWITTER_API_ACCESS_TOKEN,
-      secret: process.env.TWITTER_API_ACCESS_TOKEN_SECRET,
-    });
-
-    const response = await axios.post(
-      request.url,
-      {
-        text: tweetMessage,
-      },
-      { headers: { ...oauth.toHeader(authorization) } }
-    );
+    // Post tweet
+    const tweet = await client.v2.tweet(tweetMessage);
 
     return res.send({
       status: "success",
       message: "The Flight data created and tweeted successfully!",
+      tweet, // Optionally include tweet details
     });
   } catch (error) {
+    console.error('Error posting tweet:', error); // Log the error for debugging
     return res.send({ status: "error", message: error.message });
   }
 };
