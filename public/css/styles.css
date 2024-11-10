@@ -80,7 +80,10 @@
     scroll-behavior: smooth;
   }
 }
-
+form {
+  overflow: auto; /* מוסיף גלילה במקרה הצורך */
+  max-height: 500px; /* אם הפורם ארוך מדי, הגבלת גובה */
+}
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
@@ -293,10 +296,33 @@ kbd kbd {
 figure {
   margin: 0 0 1rem;
 }
+.navbar{
+  position: relative;
+}
 
-img,
-svg {
-  vertical-align: middle;
+/* התאמה של גודל הלוגו */
+.navbar-brand img {
+  width: 100px;
+  height: 40px;
+}
+
+/* התאמה של התמונות בסרגל הניווט (לוגו, עגלת קניות וכו') */
+.navbar-nav img {
+  width: 40px;
+  height: 40px;
+}
+
+/* התאמת גודל בתנאי רספונסיביות */
+@media (max-width: 768px) {
+  .navbar-brand img {
+      width: 80px;  /* גודל הלוגו במובייל */
+      height: auto;
+  }
+
+  .navbar-nav img {
+      width: 35px;  /* גודל תמונות אחרות במובייל */
+      height: 35px;
+  }
 }
 
 table {
@@ -435,14 +461,6 @@ legend + * {
   -webkit-appearance: textfield;
 }
 
-/* rtl:raw:
-[type="tel"],
-[type="url"],
-[type="email"],
-[type="number"] {
-  direction: ltr;
-}
-*/
 ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
@@ -613,50 +631,137 @@ progress {
 
 .figure-caption {
   font-size: 0.875em;
-  color: #6c757d;
+  color: #a9aeb3;
 }
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
+/*  EXPLOREעיצוב כללי */
+/* עיצוב כללי */
+body {
+  font-family: 'Roboto Slab', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  overflow-x: hidden; /* מונע גלילה אופקית */
+  height: 100%; /* וודא שהגוף תופס את כל הגובה של המסך */
+  overflow-y: auto; /* אפשר גלילה אנכית */
+}
+
+/* עיצוב הקונטיינר */
+.container {
   width: 100%;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  padding-right: 20px; /* padding קטן יותר */
+  padding-left: 20px;  /* padding קטן יותר */
   margin-right: auto;
   margin-left: auto;
+  box-sizing: border-box; /* כך שה-padding לא יוצא מעבר לרוחב הקונטיינר */
+  max-width: 1320px; /* הגבלת רוחב הקונטיינר */
 }
 
+/* הגדרת שורות במבנה של Flexbox */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;  /* מרווח בין המלבנים */
+  justify-content: space-between; /* מרווח אחיד בין המלבנים */
+  width: 100%;  /* לוודא שהשורה לא תצא מעבר לגבולות */
+  align-items: stretch; /* מתיחה של כל המלבנים לאורך הגובה */
+}
+
+/* עיצוב המלבנים */
+.col {
+  flex: 1; /* כל מלבן יתפוס את כל הרוחב של השורה */
+  box-sizing: border-box; /* כך שה-padding נלקח בחשבון */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  height: 100%; /* וודא שהמלבנים יתפשטו לגובה */
+  display: flex;
+  flex-direction: column; /* מבנה גמיש של המלבן */
+  justify-content: space-between; /* דאג שכל האלמנטים יתפשטו כלפי מטה */
+}
+
+/* עיצוב עבור כל אחד מהמלבנים */
+.video-container, .weather-container, .map-container {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-grow: 1; /* מוודא שהמלבן יתפשט גם לגובה וגם לרוחב */
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* מאפשר למלבן להתפשט לגובה */
+}
+
+/* כותרת עבור כל מלבן */
+.section-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333; /* כותרת בשחור */
+  margin-bottom: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 10px;
+  flex-shrink: 0; /* מונע שהתוכן יתכווץ */
+}
+
+/* תיקונים ל-Responsiveness */
+@media (max-width: 768px) {
+  .col {
+    flex: 1 1 100%;  /* כל מלבן יתפוס את כל הרוחב בשורות צרות יותר */
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 20px; /* צמצום גודל הכותרת במובייל */
+  }
+
+  .weather-container p {
+    font-size: 16px; /* התאמת גודל הטקסט במובייל */
+  }
+}
+
+/* שיפור בהתאמה לגודלי מסכים שונים */
 @media (min-width: 576px) {
-  .container-sm, .container {
-    max-width: 540px;
+  .container {
+    max-width: 540px; /* הגבלת רוחב הקונטיינר למסכים בינוניים */
   }
 }
+
 @media (min-width: 768px) {
-  .container-md, .container-sm, .container {
-    max-width: 720px;
+  .container {
+    max-width: 720px; /* הגבלת רוחב הקונטיינר למסכים גדולים יותר */
   }
 }
+
 @media (min-width: 992px) {
-  .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 960px;
   }
 }
+
 @media (min-width: 1200px) {
-  .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 1140px;
   }
 }
+
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+  .container {
     max-width: 1320px;
   }
 }
+
+/* עיצוב עבור iframe (לסרטונים ומפות) */
+.video-container iframe, .map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+/* שדרוג הגדרת השורות */
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -666,6 +771,7 @@ progress {
   margin-right: calc(-0.5 * var(--bs-gutter-x));
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
+
 .row > * {
   flex-shrink: 0;
   width: 100%;
@@ -675,9 +781,15 @@ progress {
   margin-top: var(--bs-gutter-y);
 }
 
-.col {
-  flex: 1 0 0%;
+/* שינוי צבע הכיתוב במלבן השני (או כל מלבן שתרצה) */
+.weather-container .section-title {
+  color: black !important; /* כותרת בצבע שחור */
 }
+
+.weather-container p {
+  color: black; /* טקסט במלבן השני יהיה בצבע שחור */
+}
+/*end explore*/
 
 .row-cols-auto > * {
   flex: 0 0 auto;
@@ -2130,6 +2242,13 @@ textarea.form-control-lg {
 }
 .form-control-color.form-control-lg {
   height: calc(1.5em + 1rem + 2px);
+}
+
+body {
+  background-image: url(back.jpeg);
+  background-size: cover; /* זה יגרום לתמונה לכסות את כל הדף */
+  background-position: center center; /* זה ימקם את התמונה במרכז */
+  background-repeat: no-repeat; /* תמונה לא תחזור על עצמה */
 }
 
 .form-select {
@@ -10934,7 +11053,7 @@ p {
     border: none;
     position: fixed;
     height: 80px;
-    background-color: #99a3ad;
+    background-color: #989ca173;
     transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
   }
   #mainNav .navbar-brand {
@@ -10963,20 +11082,26 @@ p {
   #mainNav .navbar-nav .nav-item:last-child {
     margin-right: 0;
   }
-}
-header.masthead {
-  padding-top: 10.5rem;
-  padding-bottom: 6rem;
-  text-align: center;
-  color: #fff;
-  background-image: url("header-bg.jpg");
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center center;
-  background-size: cover;
-  margin-top: 80px;
-  height: calc(100vh - 80px);
-}
+  header.masthead {
+    position: relative;
+    padding-top: 10.5rem;
+    padding-bottom: 6rem;
+    text-align: center;
+    color: #fff;
+    margin-top: 80px;
+    height: calc(100vh - 80px);
+    overflow: hidden;  /* לוודא שהסרטון לא יצא מחוץ לאזור */
+  }
+  
+  #background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* הסרטון יתפוס את כל הרקע מבלי לעיוות */
+    z-index: -1;  /* הסרטון יהיה מאחורי התוכן */
+  }
 
 @media (max-width: 1368px) {
   header.masthead {
@@ -11505,4 +11630,4 @@ section#contact form#contactForm :-ms-input-placeholder {
 
 #target {
   width: 345px;
-}
+}}

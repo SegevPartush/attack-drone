@@ -1,66 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Explore | Attack Drone</title>
+    <title>Explore | Drone</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
     <link href="css/styles.css" rel="stylesheet" />
 </head>
-
 <body id="page-top">
-
     <%- include('partials/userHeader') %>
-    <!-- Masthead-->
+
     <header class="masthead">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-sm-6 mb-4">
-                    <iframe src="https://www.google.com/maps/d/embed?mid=1lci7DKvcfYjZEO2xhYBOPjXcol9sFy3E&ehbc=2E312F" width="640" height="500"></iframe>
+                <!-- Video Section -->
+                <div class="col video-container">
+                    <div class="section-title">
+                        About Us
+                    </div>
+                    <iframe src="https://www.youtube.com/embed/VZo3uGnJyu4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
-                <div class="col-lg-6 col-sm-4 mb-4">
-                    <div class="weather" style="background-image: url(https://i.ibb.co/fqKDWP2/10.jpg); background-size: 100% 100%;">
-                        <p class="text-capitalize text-dark" style="font-size: large; color: whitesmoke; font-family: 'Arial Black'; ">
-                            <span>High <%- weatherData.main.temp_max %> °C</span> 
-                            <span>| Low <%- weatherData.main.temp_min %> °C</span> 
-                        </p>
-                        <p class="text-capitalize text-dark" style="font-size: large; color: whitesmoke; font-family: 'Arial Black'; ">
-                            <span>Wind <%- weatherData.wind.speed %> mph</span>  
-                        </p>
-                        <p class="text-capitalize text-dark" style="font-size: large; color: whitesmoke; font-family: 'Arial Black'; ">
-                            <span><%- weatherData.weather[0].description %> </span>  
-                        </p>
-                        <p class="text-capitalize text-dark" style="font-size: large; color: whitesmoke; font-family: 'Arial Black'; ">
-                            <span>Humidity <%- weatherData.main.humidity %> mph</span>  
-                        </p>
-                    </div>
-                    <div>
 
+                <!-- Weather Section -->
+                <div class="col weather-container">
+                    <div class="section-title">
+                        Wind Speed Restrictions - Drone Flights
                     </div>
-                    <iframe width="600" height="300" src="https://www.youtube.com/embed/VZo3uGnJyu4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <p class="text-capitalize" style="font-size: large;">
+                        <span>High: <%- weatherData.main.temp_max %> °C</span><br>
+                        <span>Low: <%- weatherData.main.temp_min %> °C</span><br>
+                        <span>Wind: <%- weatherData.wind.speed %> mph</span><br>
+                        <span>Description: <%- weatherData.weather[0].description %></span><br>
+                        <span>Humidity: <%- weatherData.main.humidity %>%</span>
+                    </p>
+                </div>
 
-                    <div class="my-2" style="background-color: wheat;">
-
+                <!-- Google Maps Section -->
+                <div class="col map-container">
+                    <div class="section-title">
+                        Flight Area Restrictions Due to Security Situation
                     </div>
+                    <iframe src="https://www.google.com/maps/d/embed?mid=1lci7DKvcfYjZEO2xhYBOPjXcol9sFy3E&ehbc=2E312F" width="640" height="500"></iframe>
                 </div>
             </div>
         </div>
-
-        <%- include('partials/footer') %>
     </header>
 
+    <%- include('partials/footer') %>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
 </body>
-
 </html>
